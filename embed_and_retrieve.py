@@ -10,6 +10,10 @@ from sentence_transformers import SentenceTransformer
 # that capture semantic meaning.
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
+def get_collection():
+    client = chromadb.PersistentClient(path="./chroma_db")
+    collection = client.get_collection(name="meal_planning_rag")
+    return collection
 
 # --------------------------------------------------
 # Load chunks from chunks.json
@@ -85,11 +89,12 @@ def embed_and_store(chunks, collection):
 # --------------------------------------------------
 # Retrieval Function
 # --------------------------------------------------
-def retrieve(query: str, collection, top_k: int = 4):
+def retrieve(query: str, top_k: int = 4):
     """
     Retrieve the most relevant chunks for a query.
     """
 
+    collection = get_collection()
     # Embed the user query
     query_embedding = model.encode(query).tolist()
 
