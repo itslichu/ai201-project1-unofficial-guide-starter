@@ -163,7 +163,6 @@ def main():
     for query in evaluation_queries:
         results = retrieve(
             query=query,
-            collection=collection,
             top_k=4
         )
 
